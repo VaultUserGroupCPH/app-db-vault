@@ -1,8 +1,7 @@
 version: "2"
 
 services:
-  db:
-    container_name: main-db
+  main-db:
     image: mysql
     ports:
       - "3306:3306"
@@ -12,13 +11,12 @@ services:
       - MYSQL_DATABASE=vaultguarded
     volumes:
       - ./db/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
-  secrets:
-    container_name: main-secrets
+  main-secrets:
     image: vault
     volumes:
       - ./vault/vault.hcl:/etc/vault.hcl
     links:
-      - "db:main-db"
+      - main-db
     ports:
       - "8200:8200"
     command: "server -config=/etc/vault.hcl"
@@ -31,3 +29,4 @@ services:
       - "8080:5000"
     environment:
       - VAULT_TOKEN=sdlfkjs
+

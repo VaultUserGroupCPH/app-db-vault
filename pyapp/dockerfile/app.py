@@ -22,6 +22,11 @@ def read():
     client = hvac.Client()
     client = hvac.Client(url='http://main-secrets:8200')
     client = hvac.Client(url='http://main-secrets:8200', token=_vault_token)
+
+    client.write('secret/foo', baz='bar', lease='1h')
+    print(client.read('secret/foo'))
+
+    client.delete('secret/foo')
     return "Read! " + _vault_token
 
 
