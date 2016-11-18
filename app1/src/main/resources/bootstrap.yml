@@ -1,0 +1,10 @@
+spring.cloud.vault:
+		token: 9a63de21-8af7-311a-9a5a-151b6a0d4795
+		scheme: http
+		generic:
+			enabled: false
+		mysql:
+			enabled: true
+			role: readonly
+
+spring.datasource.url: jdbc:mysql://127.0.0.1:3306
