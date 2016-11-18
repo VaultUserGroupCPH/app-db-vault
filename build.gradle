@@ -1,5 +1,0 @@
-allprojects {
-    task wrapper (type: Wrapper ) {
-        gradleVersion = "3.1"
-    }
-}
