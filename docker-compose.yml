@@ -10,3 +10,5 @@ services:
       - ./secrets.env
     environment:
       - MYSQL_DATABASE=vaultguarded
+    volumes:
+      - ./db/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
