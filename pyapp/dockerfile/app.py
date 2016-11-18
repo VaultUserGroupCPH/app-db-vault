@@ -18,6 +18,7 @@ def main():
 
 @app.route('/read')
 def read():
+    # Check https://github.com/ianunruh/hvac
     _vault_token = request.args.get('vault_token', 'no-token provide with vault_token=TOKEN')
     client = hvac.Client()
     client = hvac.Client(url='http://main-secrets:8200')

@@ -24,9 +24,13 @@ services:
       - VAULT_ADDR=http://127.0.0.1:8200
 
   app:
-    image: pyapp
+    build: pyapp/dockerfile
     ports:
       - "8080:5000"
     environment:
       - VAULT_TOKEN=sdlfkjs
+    depends_on:
+      - app-deps
 
+  app-deps:
+    build: pyappbacking
