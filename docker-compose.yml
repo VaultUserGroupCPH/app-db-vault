@@ -6,5 +6,7 @@ services:
     image: mysql
     ports:
       - "3306:3306"
+    env_file:
+      - ./secrets.env
     environment:
       - MYSQL_DATABASE=vaultguarded
