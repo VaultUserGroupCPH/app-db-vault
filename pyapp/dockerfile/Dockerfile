@@ -1,5 +1,6 @@
 FROM pyappbacking
 
+EXPOSE 5000
 ADD . /code
-
-ENTRYPOINT ["python", "/code/app.py"]
+WORKDIR /code
+CMD python app.py
