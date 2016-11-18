@@ -24,3 +24,10 @@ services:
     command: "server -config=/etc/vault.hcl"
     environment:
       - VAULT_ADDR=http://127.0.0.1:8200
+
+  app:
+    image: pyapp
+    ports:
+      - "8080:5000"
+    environment:
+      - VAULT_TOKEN=sdlfkjs

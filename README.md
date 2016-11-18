@@ -3,6 +3,11 @@ An application that connects to the database using credentiels provided from Vau
 
 ## First time setup
 
-    $ docker-compose up -d
+
+docker build -t pyappbacking pyappbacking
+docker build -t pyapp pyapp/dockerfile
+docker-compose up
+
+    $
     $ ./vault/unseal-vault.sh
 

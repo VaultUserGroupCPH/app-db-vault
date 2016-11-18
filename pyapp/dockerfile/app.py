@@ -20,8 +20,8 @@ def main():
 def read():
     _vault_token = request.args.get('vault_token', 'no-token provide with vault_token=TOKEN')
     client = hvac.Client()
-    client = hvac.Client(url='http://localhost:8200')
-    client = hvac.Client(url='http://localhost:8200', token=_vault_token)
+    client = hvac.Client(url='http://main-secrets:8200')
+    client = hvac.Client(url='http://main-secrets:8200', token=_vault_token)
     return "Read! " + _vault_token
 
 
