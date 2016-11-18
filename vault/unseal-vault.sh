@@ -11,9 +11,7 @@ OUTPUT="$( { vault init -key-shares=1 -key-threshold=1 | head -n2; } 2> /dev/nul
 
 VAULT_KEY=$(echo "$OUTPUT" | grep 'Key' | awk -F': ' '{print $2}')
 
-echo $VAULT_KEY
-
-export VAULT_TOKEN=$(echo "$OUTPUT" | grep 'Root Token' | awk -F': ' '{print $2}' | tr -d )
+export VAULT_TOKEN=$(echo "$OUTPUT" | grep 'Root Token' | awk -F': ' '{print $2}' | tr -d ' ')
 
 # Unseal
 vault unseal $VAULT_KEY
