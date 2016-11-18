@@ -12,3 +12,15 @@ services:
       - MYSQL_DATABASE=vaultguarded
     volumes:
       - ./db/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+  secrets:
+    container_name: main-secrets
+    image: vault
+    volumes:
+      - ./vault.hcl:/etc/vault.hcl
+    links:
+      - "db:main-db"
+    ports:
+      - "8200:8200"
+    command: "server -config=/etc/vault.hcl"
+    environment:
+      - VAULT_ADDR=http://127.0.0.1:8200
