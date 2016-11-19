@@ -1,4 +1,4 @@
-FROM pyappbacking
+FROM appdbvault_deps
 
 EXPOSE 5000
 ADD . /code

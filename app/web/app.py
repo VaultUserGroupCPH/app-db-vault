@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, render_template
 from flask import request
 
 import MySQLdb as mdb
@@ -13,7 +13,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def main():
-    return "Welcome!!"
+    return render_template('index.html')
 
 
 @app.route('/read')
