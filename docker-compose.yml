@@ -1,4 +1,4 @@
-version: "2"
+version: "3"
 
 services:
  
@@ -14,6 +14,7 @@ services:
       - ./db/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
   main-secrets:
     image: vault:0.9.5
+# THis was used in POC version 1. It may be required again if a non-dev vault is to be used.
 #    volumes:
 #      - ./vault/vault.hcl:/etc/vault.hcl
     cap_add:
@@ -36,6 +37,13 @@ services:
       - "8080:5000"
     environment:
       - VAULT_TOKEN=myroot
+    # Splitting into 2 docker images shortens build time. Good when developing.
     depends_on:
       - appdbvault_deps
+    # Mounting the volume in at startup time allows you to write code directly in the app.py file, and have the changes
+    #   applied inside the running container.
+    volumes:
+      - ./app/web:/code
 
+#        source: "./app"
+#        target: /code
