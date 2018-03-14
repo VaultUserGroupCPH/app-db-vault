@@ -13,16 +13,19 @@ services:
     volumes:
       - ./db/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
   main-secrets:
-    image: vault
-    volumes:
-      - ./vault/vault.hcl:/etc/vault.hcl
+    image: vault:0.9.5
+#    volumes:
+#      - ./vault/vault.hcl:/etc/vault.hcl
+    cap_add:
+      - IPC_LOCK
     links:
       - main-db
     ports:
       - "8200:8200"
-    command: "server -config=/etc/vault.hcl"
+#    command: "  server -config=/etc/vault.hcl"
     environment:
-      - VAULT_ADDR=http://127.0.0.1:8200
+#      - VAULT_ADDR=http://127.0.0.1:8200
+      - VAULT_DEV_ROOT_TOKEN_ID=myroot
 
   appdbvault_deps:
     build: app/deps
@@ -32,7 +35,7 @@ services:
     ports:
       - "8080:5000"
     environment:
-      - VAULT_TOKEN=sdlfkjs
+      - VAULT_TOKEN=myroot
     depends_on:
       - appdbvault_deps
 
