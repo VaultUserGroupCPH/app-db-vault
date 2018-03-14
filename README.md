@@ -1,6 +1,13 @@
 # app-db-vault
 An application that connects to the database using credentiels provided from Vault. Thats it.
 
+# Prerequisites
+docker-compose.
+On ubuntu (check dockers homepage)
+```
+sudo curl -L https://github.com/docker/compose/releases/download/1.19.0/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+```
+
 ## First time setup
 
 ```

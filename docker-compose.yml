@@ -17,15 +17,15 @@ services:
 # THis was used in POC version 1. It may be required again if a non-dev vault is to be used.
 #    volumes:
 #      - ./vault/vault.hcl:/etc/vault.hcl
+    # Something about security. I think it eases setup for a development vault system
     cap_add:
       - IPC_LOCK
-    links:
-      - main-db
     ports:
+      # lets you manipulate Vault from your host if you set VAULT_ADDR=http://0.0.0.0:8200
       - "8200:8200"
+# command not used at the moment
 #    command: "  server -config=/etc/vault.hcl"
     environment:
-#      - VAULT_ADDR=http://127.0.0.1:8200
       - VAULT_DEV_ROOT_TOKEN_ID=myroot
 
   appdbvault_deps:
@@ -33,17 +33,28 @@ services:
 
   app:
     build: app/web
+    # http port for webapp
     ports:
       - "8080:5000"
     environment:
       - VAULT_TOKEN=myroot
+      - APP_BOOTSTRAP_TOKEN=app-bootstrap-token
     # Splitting into 2 docker images shortens build time. Good when developing.
     depends_on:
       - appdbvault_deps
+      - main-secrets
     # Mounting the volume in at startup time allows you to write code directly in the app.py file, and have the changes
     #   applied inside the running container.
     volumes:
       - ./app/web:/code
 
-#        source: "./app"
-#        target: /code
+  bootstrap:
+    build: app/bootstrap
+    # http port for webapp
+    depends_on:
+      - appdbvault_deps
+      - main-secrets
+    # Mounting the volume in at startup time allows you to write code directly in the app.py file, and have the changes
+    #   applied inside the running container.
+    volumes:
+      - ./app/bootstrap:/code
