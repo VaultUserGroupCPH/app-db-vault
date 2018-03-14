@@ -1,6 +1,7 @@
 version: "2"
 
 services:
+ 
   main-db:
     image: mysql
     ports:
@@ -23,7 +24,7 @@ services:
     environment:
       - VAULT_ADDR=http://127.0.0.1:8200
 
-  app-deps:
+  appdbvault_deps:
     build: app/deps
 
   app:
@@ -33,5 +34,5 @@ services:
     environment:
       - VAULT_TOKEN=sdlfkjs
     depends_on:
-      - app-deps
+      - appdbvault_deps
 
