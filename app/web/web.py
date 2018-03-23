@@ -34,7 +34,12 @@ def read():
 @app.route('/write')
 def write():
     client = hvac.Client(url='http://main-secrets:8200', token=_vault_token)
-    client.write('secret/foo', key='value', lease='1h')
+    try:
+        client.write('secret/foo', key='value', lease='1h')
+    except hvac.exceptions.InvalidRequest, e:
+        print "Something went wrong. The error is '%s'" % \
+          e.args[0]
+
     return 'wrote value'
 
 # This is just for fun/demo purposes

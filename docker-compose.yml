@@ -47,7 +47,7 @@ services:
     depends_on:
       - appdbvault_deps
       - main-secrets
-    # Mounting the volume in at startup time allows you to write code directly in the app.py file, and have the changes
+    # Mounting the volume in at startup time allows you to write code directly in the web.py file, and have the changes
     #   applied inside the running container.
     volumes:
       - ./app/web:/code
@@ -58,7 +58,7 @@ services:
     depends_on:
       - appdbvault_deps
       - main-secrets
-    # Mounting the volume in at startup time allows you to write code directly in the app.py file, and have the changes
+    # Mounting the volume in at startup time allows you to write code directly in the web.py file, and have the changes
     #   applied inside the running container.
     volumes:
       - ./app/bootstrap:/code

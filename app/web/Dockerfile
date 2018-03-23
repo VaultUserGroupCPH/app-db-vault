@@ -3,4 +3,4 @@ FROM appdbvault_deps
 EXPOSE 5000
 ADD . /code
 WORKDIR /code
-CMD python app.py
+CMD python web.py
