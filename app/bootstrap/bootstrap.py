@@ -28,5 +28,9 @@ if __name__ == "__main__":
     print "Bootstrap vault..."
 
     client = hvac.Client(url='http://main-secrets:8200', token=_vault_token)
+
+    client.enable_secret_backend('mysql')
+    client.write('mysql/config/connection', connection_url="root:correct-horse-battery-staple@tcp(main-db:3306)/")
+
     operator_create_token(client)
     #operator_add_credentials_for_db(client)
