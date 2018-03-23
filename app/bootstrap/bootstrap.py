@@ -7,6 +7,7 @@ import hvac
 import os
 
 _vault_token = os.environ['VAULT_TOKEN']
+_mysql_root_password = os.environ['MYSQL_ROOT_PASSWORD']
 
 
 def operator_create_token(client):
@@ -31,12 +32,12 @@ def operator_setup_mysql_backend(client):
     client.enable_secret_backend('mysql', mount_point='jesper')
     # I magically know the root password to make this work. I think its possible to do this without ever knowing the
     #   password (its about parsing the output when creating a mysql db, and get the password there)
-    client.write('mysql/config/connection', connection_url="root:correct-horse-battery-staple@tcp(main-db:3306)/")
+    client.write('mysql/config/connection', connection_url="root:%s@tcp(main-db:3306)/" % _mysql_root_password)
     client.write('mysql/config/lease', lease="5s", lease_max="1h")
     client.write('mysql/roles/readonly',
                  sql="CREATE USER '{{name}}'@'%' IDENTIFIED BY '{{password}}';GRANT SELECT ON *.* TO '{{name}}'@'%';")
 
-    client.write('jesper/config/connection', connection_url="root:correct-horse-battery-staple@tcp(main-db:3306)/")
+    client.write('jesper/config/connection', connection_url="root:%s@tcp(main-db:3306)/" % _mysql_root_password)
     client.write('jesper/config/lease', lease="1m", lease_max="1h")
     client.write('jesper/roles/readonly',
                  sql="CREATE USER '{{name}}'@'%' IDENTIFIED BY '{{password}}';GRANT SELECT ON *.* TO '{{name}}'@'%';")

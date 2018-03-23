@@ -63,3 +63,4 @@ services:
       - ./app/bootstrap:/code
     environment:
       - VAULT_TOKEN=myroot
+      - MYSQL_ROOT_PASSWORD=correct-horse-battery-staple
