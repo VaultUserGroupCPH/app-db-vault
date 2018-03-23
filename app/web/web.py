@@ -50,12 +50,33 @@ def delete():
     return 'Deleted value'
 
 # This is whats happening https://www.vaultproject.io/docs/secrets/mysql/index.html
-@app.route('/dynamic-connect')
-def dynamic_connect():
+@app.route('/dynamic-connect-short')
+def dynamic_connect_short():
     client = hvac.Client(url='http://main-secrets:8200', token=_vault_token)
     credentials = client.read('mysql/creds/readonly')
-    print credentials
-    return "user pass [ %s %s ]" % (credentials['data']['username'], credentials['data']['password'])
+
+    con = mdb.connect('main-db', credentials['data']['username'], credentials['data']['password'], 'vaulthackathon')
+    cur = con.cursor()
+    cur.execute("SELECT VERSION()")
+
+    ver = cur.fetchone()
+    return "user %s pass %s lease_duration %s found %s ]" % (credentials['data']['username'],
+                                       credentials['data']['password'],
+                                       credentials['lease_duration'], ver)
+
+@app.route('/dynamic-connect-long')
+def dynamic_connect_long():
+    client = hvac.Client(url='http://main-secrets:8200', token=_vault_token)
+    credentials = client.read('jesper/creds/readonly')
+
+    con = mdb.connect('main-db', credentials['data']['username'], credentials['data']['password'], 'vaulthackathon')
+    cur = con.cursor()
+    cur.execute("SELECT VERSION()")
+
+    ver = cur.fetchone()
+    return "user %s pass %s lease_duration %s found %s ]" % (credentials['data']['username'],
+                                                             credentials['data']['password'],
+                                                             credentials['lease_duration'], ver)
 
 
 @app.route('/connect')
