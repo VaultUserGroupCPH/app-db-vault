@@ -14,9 +14,9 @@ def operator_create_token(client):
               e.args[0]
 
 
-def operator_add_credentials_for_db(client):
-    try:
-        client.write('secret/environment-test/', key='value', lease='1h')
+#def operator_add_credentials_for_db(client):
+#    try:
+#        client.write('secret/environment-test/', key='value', lease='1h')
 
 
 if __name__ == "__main__":
@@ -25,4 +25,4 @@ if __name__ == "__main__":
     _vault_token = "myroot"
     client = hvac.Client(url='http://main-secrets:8200', token=_vault_token)
     operator_create_token(client)
-    operator_add_credentials_for_db(client)
+#    operator_add_credentials_for_db(client)
