@@ -33,7 +33,7 @@ services:
     build: app/deps
     image: appdbvault_deps
 
-  app:
+  web:
     depends_on: appdbvault_deps
     build: app/web
 
