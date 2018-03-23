@@ -41,8 +41,7 @@ services:
     ports:
       - "8080:5000"
     environment:
-      - VAULT_TOKEN=myroot
-      - APP_BOOTSTRAP_TOKEN=app-bootstrap-token
+      - VAULT_TOKEN=app-bootstrap-token
     # Splitting into 2 docker images shortens build time. Good when developing.
     depends_on:
       - appdbvault_deps
@@ -62,3 +61,5 @@ services:
     #   applied inside the running container.
     volumes:
       - ./app/bootstrap:/code
+    environment:
+      - VAULT_TOKEN=myroot

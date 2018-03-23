@@ -1,10 +1,12 @@
 #from flask import Flask, request, render_template
 
 #import MySQLdb as mdb
-import sys
+#import sys
 
 import hvac
+import os
 
+_vault_token = os.environ['VAULT_TOKEN']
 
 def operator_create_token(client):
     try:
@@ -25,7 +27,6 @@ def operator_add_credentials_for_db(client):
 if __name__ == "__main__":
     print "Bootstrap vault..."
 
-    _vault_token = "myroot"
     client = hvac.Client(url='http://main-secrets:8200', token=_vault_token)
     operator_create_token(client)
     #operator_add_credentials_for_db(client)

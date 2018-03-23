@@ -4,10 +4,11 @@ from flask import Flask, request, render_template
 import MySQLdb as mdb
 import sys
 import hvac
+import os
 
 app = Flask(__name__)
-# TODO get this from env var APP_BOOTSTRAP_TOKEN
-_vault_token = "app-bootstrap-token"
+
+_vault_token = os.environ['VAULT_TOKEN']
 
 @app.route("/")
 def main():
@@ -37,8 +38,7 @@ def write():
     try:
         client.write('secret/foo', key='value', lease='1h')
     except hvac.exceptions.InvalidRequest, e:
-        print "Something went wrong. The error is '%s'" % \
-          e.args[0]
+        print "Something went wrong. The error is '%s'" % e.args[0]
 
     return 'wrote value'
 
