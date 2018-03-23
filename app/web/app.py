@@ -6,12 +6,14 @@ import sys
 import hvac
 
 app = Flask(__name__)
+# TODO get this from env var APP_BOOTSTRAP_TOKEN
 _vault_token = "app-bootstrap-token"
 
 @app.route("/")
 def main():
     return render_template('index.html')
 
+# This is just for fun/demo purposes
 @app.route('/read')
 def read():
     print "endpoint 'read' called"
@@ -28,20 +30,24 @@ def read():
     value  = client.read('secret/foo')['data']['key']
     return "Read! token is " + _vault_token + " value of foo is " + value # +  client.read('secret/foo')
 
+# This is just for fun/demo purposes
 @app.route('/write')
 def write():
     client = hvac.Client(url='http://main-secrets:8200', token=_vault_token)
     client.write('secret/foo', key='value', lease='1h')
     return 'wrote value'
 
+# This is just for fun/demo purposes
 @app.route('/delete')
 def delete():
     client = hvac.Client(url='http://main-secrets:8200', token=_vault_token)
     client.delete('secret/foo')
     return 'Deleted value'
 
+
 @app.route('/connect')
 def connect():
+    # TODO get the credentials from Vault
     try:
         con = mdb.connect('localhost', 'testuser', 'test623', 'testdb')
         cur = con.cursor()

@@ -1,5 +1,14 @@
 # app-db-vault
-An application that connects to the database using credentiels provided from Vault. Thats it.
+An application that connects to the database using credentials provided from Vault. Thats it.
+
+The setup is not quite there yet. Sofar this is what happens:
+
+1. Vault starts 
+2. A bootstrap app simulates the creation of an initial Vault Token, that is provided to the "next"
+app via env. var APP_BOOTSTRAP_TOKEN
+3. A web app reads the APP_BOOTSTRAP_TOKEN and fetches an initial value from vault with it.
+
+
 
 # Prerequisites
 docker-compose.
