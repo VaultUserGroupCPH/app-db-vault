@@ -2,7 +2,7 @@
 
 # import MySQLdb as mdb
 # import sys
-
+import time
 import hvac
 import os
 
@@ -37,9 +37,11 @@ def operator_setup_mysql_backend(client):
 
 if __name__ == "__main__":
     print "Bootstrap vault..."
-
+    # Wait for db to start
+    time.sleep(5)
     client = hvac.Client(url='http://main-secrets:8200', token=_vault_token)
 
     operator_setup_mysql_backend(client)
     operator_create_token(client)
     # operator_add_credentials_for_db(client)
+    print "...Vault Bootstrapped"

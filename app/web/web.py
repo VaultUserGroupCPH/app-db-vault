@@ -49,12 +49,13 @@ def delete():
     client.delete('secret/foo')
     return 'Deleted value'
 
-
+# This is whats happening https://www.vaultproject.io/docs/secrets/mysql/index.html
 @app.route('/dynamic-connect')
 def dynamic_connect():
     client = hvac.Client(url='http://main-secrets:8200', token=_vault_token)
     credentials = client.read('mysql/creds/readonly')
-    return "banana" #credentials
+    print credentials
+    return "user pass [ %s %s ]" % (credentials['data']['username'], credentials['data']['password'])
 
 
 @app.route('/connect')
