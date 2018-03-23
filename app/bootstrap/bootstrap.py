@@ -1,12 +1,13 @@
-#from flask import Flask, request, render_template
+# from flask import Flask, request, render_template
 
-#import MySQLdb as mdb
-#import sys
+# import MySQLdb as mdb
+# import sys
 
 import hvac
 import os
 
 _vault_token = os.environ['VAULT_TOKEN']
+
 
 def operator_create_token(client):
     try:
@@ -23,14 +24,22 @@ def operator_add_credentials_for_db(client):
         print "Something went wrong. The error is '%s'" % \
               e.args[0]
 
+# In this case, secret backend does not mean that secret data is stored in PosgreSQL/MySQL.
+#  It means that Vault can create (and revoke) users for databases on demand.
+def operator_setup_mysql_backend(client):
+    client.enable_secret_backend('mysql')
+    # I magically know the root password to make this work. I think its possible to do this without ever knowing the
+    #   password (its about parsing the output when creating a mysql db, and get the password there)
+    client.write('mysql/config/connection', connection_url="root:correct-horse-battery-staple@tcp(main-db:3306)/")
+    client.write('mysql/roles/readonly',
+                 sql="CREATE USER '{{name}}'@'%' IDENTIFIED BY '{{password}}';GRANT SELECT ON *.* TO '{{name}}'@'%';")
+
 
 if __name__ == "__main__":
     print "Bootstrap vault..."
 
     client = hvac.Client(url='http://main-secrets:8200', token=_vault_token)
 
-    client.enable_secret_backend('mysql')
-    client.write('mysql/config/connection', connection_url="root:correct-horse-battery-staple@tcp(main-db:3306)/")
-
+    operator_setup_mysql_backend(client)
     operator_create_token(client)
-    #operator_add_credentials_for_db(client)
+    # operator_add_credentials_for_db(client)

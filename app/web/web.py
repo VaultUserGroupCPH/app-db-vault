@@ -50,6 +50,13 @@ def delete():
     return 'Deleted value'
 
 
+@app.route('/dynamic-connect')
+def dynamic_connect():
+    client = hvac.Client(url='http://main-secrets:8200', token=_vault_token)
+    credentials = client.read('mysql/creds/readonly')
+    return "banana" #credentials
+
+
 @app.route('/connect')
 def connect():
     # TODO get the credentials from Vault
