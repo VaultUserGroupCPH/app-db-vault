@@ -30,9 +30,12 @@ services:
 
   appdbvault_deps:
     build: app/deps
+    image: appdbvault_deps
 
   app:
+    depends_on: appdbvault_deps
     build: app/web
+
     # http port for webapp
     ports:
       - "8080:5000"
