@@ -1,7 +1,7 @@
 version: "3"
 
 services:
- 
+
   main-db:
     image: mysql
     ports:
@@ -12,19 +12,20 @@ services:
       - MYSQL_DATABASE=vaultguarded
     volumes:
       - ./db/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+
   main-secrets:
     image: vault:0.9.5
-# THis was used in POC version 1. It may be required again if a non-dev vault is to be used.
-#    volumes:
-#      - ./vault/vault.hcl:/etc/vault.hcl
+    # THis was used in POC version 1. It may be required again if a non-dev vault is to be used.
+    #    volumes:
+    #      - ./vault/vault.hcl:/etc/vault.hcl
     # Something about security. I think it eases setup for a development vault system
     cap_add:
       - IPC_LOCK
     ports:
       # lets you manipulate Vault from your host if you set VAULT_ADDR=http://0.0.0.0:8200
       - "8200:8200"
-# command not used at the moment
-#    command: "  server -config=/etc/vault.hcl"
+    # command not used at the moment
+    #    command: "  server -config=/etc/vault.hcl"
     environment:
       - VAULT_DEV_ROOT_TOKEN_ID=myroot
 
